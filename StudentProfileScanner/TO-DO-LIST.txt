@@ -1,0 +1,2 @@
+﻿Add feature: If Submit Database Data button hasn't been pressed warn while closing
+Improve openfiledialog / extension, filename, defauld dir
