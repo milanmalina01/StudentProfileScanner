@@ -32,16 +32,21 @@ namespace StudentProfileScanner
         private void Form1_Load(object sender, EventArgs e)
         {
             databasePath = Application.ExecutablePath.Replace("StudentProfileScanner.EXE", "") + "StudentProfileDatabase.s3db";
-            CheckDatabaseConnection();
+            if (CheckDatabaseConnection())
+            {
 
-            comboBox1.Items.Clear();
-            comboBox2.Items.Clear();
-            foreach (string item in General.GetActivities(databasePath))
-                comboBox1.Items.Add(item);
-            foreach (string item in General.GetMentors(databasePath))
-                comboBox2.Items.Add(item);
+                comboBox1.Items.Clear();
+                comboBox2.Items.Clear();
+                foreach (string item in General.GetActivities(databasePath))
+                    comboBox1.Items.Add(item);
+                foreach (string item in General.GetMentors(databasePath))
+                    comboBox2.Items.Add(item);
 
-            button8.Text = "Submit Database Data [" + General.GetNumberOfReports(databasePath) + "]";
+                button8.Text = "Submit Database Data [" + General.GetNumberOfReports(databasePath) + "]";
+            }
+            else
+                MessageBox.Show("There is no database file in the same directory as this application, select the database file using 'Open database' button", "Database loading failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
         }
 
         private void openDatabaseButton_Click(object sender, EventArgs e)
@@ -51,24 +56,38 @@ namespace StudentProfileScanner
             {
                 databasePath = openFileDialog1.FileName;
                 CheckDatabaseConnection();
+                button8.Text = "Submit Database Data [" + General.GetNumberOfReports(databasePath) + "]";
             }
         }
 
-        public void CheckDatabaseConnection()
+        public bool CheckDatabaseConnection()
         {
             if (File.Exists(databasePath) && Path.GetExtension(databasePath) == ".s3db")
             {
-                toolStripStatusLabel1.Text = "Database OK";
+                try
+                {
+                    toolStripStatusLabel1.Text = "Database OK";
 
-                comboBox1.Items.Clear();
-                comboBox2.Items.Clear();
-                foreach (string item in General.GetActivities(databasePath))
-                    comboBox1.Items.Add(item);
-                foreach (string item in General.GetMentors(databasePath))
-                    comboBox2.Items.Add(item);
+                    comboBox1.Items.Clear();
+                    comboBox2.Items.Clear();
+                    foreach (string item in General.GetActivities(databasePath))
+                        comboBox1.Items.Add(item);
+                    foreach (string item in General.GetMentors(databasePath))
+                        comboBox2.Items.Add(item);
+                    General.GetAttendaceSummaryReports(databasePath);
+                    return true;
+                }
+                catch
+                {
+                    toolStripStatusLabel1.Text = "ERROR, database cannot be loaded, try again";
+                    return false;
+                }
             }
             else
+            {
                 toolStripStatusLabel1.Text = "ERROR, database cannot be loaded, try again";
+            }
+            return false;
         }
 
         private void addBarcodeTextbox_TextChanged(object sender, EventArgs e)
@@ -128,8 +147,8 @@ namespace StudentProfileScanner
             if (attendanceRecord != null)
             {
                 DateTime dateTime = Convert.ToDateTime(attendanceRecord.dateTime);
-                General.AddAttendanceReport(Convert.ToInt32(label8.Text.Replace("ID:", "")), dateTime, attendanceRecord.activity, attendanceRecord.mentor, databasePath);
-                General.AddAttendanceSummaryReport(Convert.ToInt32(label8.Text.Replace("ID:", "")), dateTime, attendanceRecord.activity, attendanceRecord.mentor, databasePath);
+                General.AddAttendanceReport(Convert.ToInt32(label8.Text.Replace("ID:", "")), dateTime, attendanceRecord.activity, attendanceRecord.mentor, General.GetIndexBasedOnCurrentTime(), databasePath);
+                General.AddAttendanceSummaryReport(Convert.ToInt32(label8.Text.Replace("ID:", "")), dateTime, attendanceRecord.activity, attendanceRecord.mentor, General.GetIndexBasedOnCurrentTime(), databasePath);
                 General.DeleteScannedProfileByID(Convert.ToInt32(label8.Text.Replace("ID:", "")), databasePath);
             }
             else
@@ -201,8 +220,9 @@ namespace StudentProfileScanner
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (General.GetNumberOfReports(databasePath) != 0)
-                MessageBox.Show("Reports haven't been sent, click 'Submit Database Data' button before exiting", "Exit", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (CheckDatabaseConnection())
+                if (General.GetNumberOfReports(databasePath) != 0)
+                    MessageBox.Show("Reports haven't been sent, click 'Submit Database Data' button before exiting", "Exit", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
         }
 
         private void button3_Click(object sender, EventArgs e)

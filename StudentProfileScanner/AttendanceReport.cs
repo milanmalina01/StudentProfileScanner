@@ -14,8 +14,9 @@ namespace StudentProfileScanner
         public string deltaDateTime;
         public string activity;
         public string mentor;
+        public int index;
 
-        public AttendanceReport(int ID, string dateTimeIN, string dateTimeOUT, string deltaDateTime, string activity, string mentor)
+        public AttendanceReport(int ID, string dateTimeIN, string dateTimeOUT, string deltaDateTime, string activity, string mentor, int index)
         {
             this.ID = ID;
             this.dateTimeIN = dateTimeIN;
@@ -23,6 +24,7 @@ namespace StudentProfileScanner
             this.deltaDateTime = deltaDateTime;
             this.activity = activity;
             this.mentor = mentor;
+            this.index = index;
         }
     }
 }

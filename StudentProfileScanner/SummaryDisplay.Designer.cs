@@ -35,6 +35,7 @@
             this.timeOUTcolumnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.activityColumnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mentorColumnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.IndexColumnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listView1
@@ -45,7 +46,8 @@
             this.timeDeltacolumnHeader1,
             this.timeOUTcolumnHeader1,
             this.activityColumnHeader1,
-            this.mentorColumnHeader1});
+            this.mentorColumnHeader1,
+            this.IndexColumnHeader1});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(0, 0);
@@ -87,6 +89,10 @@
             this.mentorColumnHeader1.Text = "Mentor";
             this.mentorColumnHeader1.Width = 200;
             // 
+            // IndexColumnHeader1
+            // 
+            this.IndexColumnHeader1.Text = "ReportID";
+            // 
             // SummaryDisplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -110,5 +116,6 @@
         private System.Windows.Forms.ColumnHeader timeOUTcolumnHeader1;
         private System.Windows.Forms.ColumnHeader activityColumnHeader1;
         private System.Windows.Forms.ColumnHeader mentorColumnHeader1;
+        private System.Windows.Forms.ColumnHeader IndexColumnHeader1;
     }
 }

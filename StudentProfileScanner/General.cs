@@ -53,8 +53,9 @@ namespace StudentProfileScanner
                 string deltaTime = reader.GetString(3);
                 string activity = reader.GetString(4);
                 string mentor = reader.GetString(5);
+                int index = reader.GetInt32(6);
 
-                attendanceReports.Add(new AttendanceReport(ID, timeIN, timeOUT, deltaTime, activity, mentor));
+                attendanceReports.Add(new AttendanceReport(ID, timeIN, timeOUT, deltaTime, activity, mentor, index));
             }
             reader.Close();
             conn.Close();
@@ -80,8 +81,9 @@ namespace StudentProfileScanner
                 string deltaTime = reader.GetString(3);
                 string activity = reader.GetString(4);
                 string mentor = reader.GetString(5);
+                int index = reader.GetInt32(6);
 
-                attendanceReports.Add(new AttendanceReport(ID, timeIN, timeOUT, deltaTime, activity, mentor));
+                attendanceReports.Add(new AttendanceReport(ID, timeIN, timeOUT, deltaTime, activity, mentor, index));
             }
             reader.Close();
             conn.Close();
@@ -100,37 +102,37 @@ namespace StudentProfileScanner
             conn.Close();
         }
 
-        public static void AddAttendanceReport(int ID, DateTime dateTime, string activity, string mentor, string data_path)
+        public static void AddAttendanceReport(int ID, DateTime dateTime, string activity, string mentor, int index, string data_path)
         {
             SQLiteConnection conn = new SQLiteConnection(@"Data Source=" + data_path);
             conn.Open();
 
             SQLiteCommand cmd = new SQLiteCommand(conn);
 
-            cmd.CommandText = "INSERT INTO AttendanceReports VALUES (" + ID + ",'" + dateTime.ToString() + "' ,'" + DateTime.Now + "' ,'" + (DateTime.Now - dateTime).ToString() + "' ,'" + activity + "' ,'" + mentor + "')";
+            cmd.CommandText = "INSERT INTO AttendanceReports VALUES (" + ID + ",'" + dateTime.ToString() + "' ,'" + DateTime.Now + "' ,'" + (DateTime.Now - dateTime).ToString() + "' ,'" + activity + "' ,'" + mentor + "' ," + index + ")";
             cmd.ExecuteNonQuery();
             conn.Close();
         }
 
-        public static void DeleteAttendanceSummaryReport(int  reportID, string data_path)
+        public static void DeleteAttendanceSummaryReport(string index, string data_path)
         {
             SQLiteConnection conn = new SQLiteConnection(@"Data Source=" + data_path);
             conn.Open();
 
             SQLiteCommand cmd = new SQLiteCommand(conn);
 
-            cmd.CommandText = "DELETE FROM AttendanceSummary WHERE ReportID = " + reportID;
+            cmd.CommandText = "DELETE FROM AttendanceSummary WHERE ReportID = " + index;
             cmd.ExecuteNonQuery();
             conn.Close();
         }
-        public static void AddAttendanceSummaryReport(int ID, DateTime dateTime, string activity, string mentor, string data_path)
+        public static void AddAttendanceSummaryReport(int ID, DateTime dateTime, string activity, string mentor, int index, string data_path)
         {
             SQLiteConnection conn = new SQLiteConnection(@"Data Source=" + data_path);
             conn.Open();
 
             SQLiteCommand cmd = new SQLiteCommand(conn);
 
-            cmd.CommandText = "INSERT INTO AttendanceSummary VALUES (" + ID + ",'" + dateTime.ToString() + "' ,'" + DateTime.Now + "' ,'" + (DateTime.Now - dateTime).ToString() + "' ,'" + activity + "' ,'" + mentor + "')";
+            cmd.CommandText = "INSERT INTO AttendanceSummary VALUES (" + ID + ",'" + dateTime.ToString() + "' ,'" + DateTime.Now + "' ,'" + (DateTime.Now - dateTime).ToString() + "' ,'" + activity + "' ,'" + mentor + "' ," + index + ")";
             cmd.ExecuteNonQuery();
             conn.Close();
         }
@@ -198,7 +200,7 @@ namespace StudentProfileScanner
             }
             catch
             {
-                MessageBox.Show("There is no database file in the same directory as this application, select the database file using 'Open database' button", "Database loading failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //MessageBox.Show("There is no database file in the same directory as this application, select the database file using 'Open database' button", "Database loading failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             return activities.ToArray();
         }
@@ -406,6 +408,11 @@ namespace StudentProfileScanner
             cmd.CommandText = "DELETE FROM Students";
             cmd.ExecuteNonQuery();
             conn.Close();
+        }
+
+        public static int GetIndexBasedOnCurrentTime()
+        {
+            return Convert.ToInt32(DateTime.Now.Second.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString());
         }
     }
 }
