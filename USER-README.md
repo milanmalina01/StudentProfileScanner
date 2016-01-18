@@ -19,9 +19,12 @@ USER README
   4. Final Summary (View Database) button - Shows Attendance summary table (more in 3.)
 3. Final Summary (View Database) table
   1. Table can be used to view all report at once.
-  2. When item is double clicked, teacher/mentor can view attendance ov
+  2. When item is double clicked, teacher/mentor can view attendance overwiew including pie charts.
+  3. Selected item can be deleted using Delete key on your keyboard.
 4. Fixes
-  1. Scanner
-  2. Software/Database file
+  1. Scanner - The code, that the scanner sends to PC depends on settings of the scanner. More info about scanner setting can be found in the manual, that comes with the scanner.
+  2. Software/Database file - If the program cannot find the database automaticly, use "Open Database" button and fidn it manualy.
 5. Other database editing options
+  1. SQLiteStudio - http://sqlitestudio.pl/
+  2. SQLite Administrator - http://sqliteadmin.orbmu2k.de/
   
