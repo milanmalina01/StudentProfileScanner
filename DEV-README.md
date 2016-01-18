@@ -1,4 +1,4 @@
-# StudentProfileScanner
+# Student Profile Scanner
 -----------
 DEVELOPER README
 -----------
