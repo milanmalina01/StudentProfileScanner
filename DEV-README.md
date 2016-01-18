@@ -1,4 +1,4 @@
-# StudentProfileScanner - Coming soon
+# StudentProfileScanner
 1. Forms
   1. Form1 - First form that is started.  Application.Run(new Form1()); (From Program.cs)
   2. SummaryDisplay - Summary window that is created and opened after pressing "Final Summary (View Database)" button
